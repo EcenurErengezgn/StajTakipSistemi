@@ -9,6 +9,7 @@ class bolum extends Model
      protected $table = "bolum";
 
     protected $fillable = ['adi'];
+  public $timestamps = false;
 
     public function kullanici()
     {
