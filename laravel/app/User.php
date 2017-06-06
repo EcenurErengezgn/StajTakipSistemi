@@ -15,7 +15,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name','last_name','TC_number', 'email', 'password','active','department_id','role_id',
     ];
 
     /**
@@ -26,4 +26,56 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+    protected $with = ['role','bolum'];
+
+
+    public function role()
+
+    {
+        return $this->hasOne('App\Role','id','role_id');
+    }
+    public function bolum()
+
+    {
+        return $this->hasOne('App\bolum','id','department_id');
+    }
+    private function checkIfUserHasBolum($need_bolum)
+    {
+        return (strtolower($need_bolum)==strtolower($this->bolum->adi)) ? true : null;
+    }
+    public function hasBolum($bolums)
+    {
+        if (is_array($bolums))
+        {
+            foreach($bolums as $need_bolum) {
+                if($this->checkIfUserHasBolum($need_bolum))
+                {
+                    return true;
+                }
+            }
+        }else {
+            return $this->checkIfUserHasBolum($bolums);
+        }
+        return false;
+    }
+
+    private function checkIfUserHasRole($need_role)
+    {
+        return (strtolower($need_role)==strtolower($this->role->name)) ? true : null;
+    }
+    public function hasRole($roles)
+    {
+        if (is_array($roles))
+        {
+            foreach($roles as $need_role) {
+                if($this->checkIfUserHasRole($need_role))
+                {
+                    return true;
+                }
+            }
+        }else {
+            return $this->checkIfUserHasRole($roles);
+        }
+        return false;
+    }
 }
