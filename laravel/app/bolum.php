@@ -6,17 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class bolum extends Model
 {
-    protected $table = 'bolum';
-    protected $fillable=['adi'];
-    protected $primaryKey='id';
-    public $timestamps=false;
+     protected $table = "bolum";
 
-    public function user()
+    protected $fillable = ['adi'];
+  public $timestamps = false;
+
+    public function kullanici()
     {
-    	return $this->hasMany('App\User');
-    }
-     public function mufredatdurumu()
-    {
-    	return $this->hasMany('App\mufredatdurumu');
+    	return $this->hasMany('App\kullanici');
     }
 }
